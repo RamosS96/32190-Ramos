@@ -1,35 +1,45 @@
-class Usuario {
-    constructor (nombre, apellido, libros, mascotas){
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.libros = [libros];
-        this.mascotas = mascotas;
+const fs = require('fs');
+const txt = "./test.txt";
+
+
+class Contenedor {
+    constructor (archivo){
+        this.archivo = archivo
     };
 
-    getFullName = () => {
-        console.log(`Bienvenido ${this.nombre} ${this.apellido}`)
+    save(obj) {
+            const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
+            data.push({...obj, id: data.length+1})
+            fs.writeFileSync(this.archivo, JSON.stringify(data))
+            console.log(data)
+        
     }
 
-    addMascota = (masc) => {
-        this.mascotas.push(masc)
-        console.log(`Se agregó ${masc} a la lista de mascotas`)
-        console.log(`La lista de mascotas actuales es ${this.mascotas}`)
+    getByNumber (id) {
+        const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
+        console.log(data.find( el => el.id == id))
     }
 
-    countMascotas = () => {
-        console.log(`La cantidad de mascotas actuales es: ${this.mascotas.length}`)
+    getAll (){
+        const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
+        console.log(data)
     }
 
-    getBooksName = () => {
-        const nBooks = [];
-        this.libros.map(d => nBooks.push(d.titulo))
-        return console.log(nBooks)
+    deleteByID(id){
+        const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
+        const index = data.findIndex(el => el.id == id)
+        data.splice(index,1)
+        fs.writeFileSync(this.archivo, JSON.stringify(data))
+        console.log(`Se ha borrado el registro nro ${index + 1 }`)    
+    }
+
+    deleteAll () {
+        var data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
+        data = []
+        fs.writeFileSync(this.archivo, JSON.stringify(data))
+        console.log("Se han borrado todos los registros")
     }
 }
 
-const user1 = new Usuario("Sebastian", "Ramos", {titulo: "Harry Potter 1", autor: "JK Rowling"}, ["Betun", "Cartucho", "Rosa"]);
-
-user1.getFullName();
-user1.addMascota("Roco");
-user1.countMascotas();
-user1.getBooksName();
+const archivos = new Contenedor(txt)
+archivos.getAll();
