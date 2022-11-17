@@ -1,95 +1,57 @@
 const fs = require('fs');
-const txt = "./test.txt";
-
-
-class Contenedor {
-    constructor(archivo) {
-        this.archivo = archivo
-    };
-
-    save(obj) {
-        try {
-            const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
-            newItem = { ...obj, id: data.length + 1 }
-            data.push(newItem)
-            fs.writeFileSync(this.archivo, JSON.stringify(data))
-            console.log(`Se ha guardado el item bajo el id: ${newItem.id}`)
-        } catch (error) {
-            console.error(`Ocurrio un error al guardar el item ${error}`)
-        }
-
-
-    }
-
-    getByNumber(id) {
-        try {
-            const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
-            console.log(data.find(el => el.id == id))
-        }
-        catch (error) {
-            console.error("Ocurrio un error al obtener el ID seleccionado o el mismo no fue encontrado")
-        }
-    }
-
-    getAll() {
-        try {
-            const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
-            return data
-        }
-        catch (error) {
-            console.error("Ocurrio un error al obtener la lista de items")
-        }
-
-    }
-
-    deleteByID(id) {
-        try {
-            const data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
-            const index = data.findIndex(el => el.id == id)
-            data.splice(index, 1)
-            fs.writeFileSync(this.archivo, JSON.stringify(data))
-            console.log(`Se ha borrado el registro nro ${index + 1}`)
-        }
-        catch (error) {
-            console.error("Ocurrio un error al borrar el item seleccionado")
-        }
-
-    }
-
-    deleteAll() {
-        try {
-            var data = JSON.parse(fs.readFileSync(this.archivo, 'utf-8'))
-            data = []
-            fs.writeFileSync(this.archivo, JSON.stringify(data))
-            console.log("Se han borrado todos los registros")
-        }
-        catch (error) {
-            console.error("Ocurrio un error al borrar todos los items")
-        }
-
-    }
-}
-
-
-
 const express = require('express');
+const txt = "./test.txt";
+const { Router } = express
+
 const app = express()
+const router = Router()
 
-app.get("/", (req, res) => {
-    res.send(`<h1>"Bienvenidos"</h1>`)
+
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use('/api', express.static('public'))
+const productos = [];
+
+router.get('/', (req,res) => {
+    res.json(productos)
 })
 
-app.get("/productos", (req, res) => {
-    const archivos = new Contenedor(txt)
-    res.send(archivos.getAll())
+router.post('/', (req, res) => {
+    const nuevoproducto =  {...req.body, id: productos.length + 1}
+
+    productos.push(nuevoproducto)
+    res.json("Se agregó el item bajo el id: " + nuevoproducto.id)
 })
 
-app.get("/productorandom", (req, res) => {
-    const archivos = new Contenedor(txt);
-    const randomN = Math.floor(Math.random() * (archivos.getAll().length))
-    res.send(archivos.getAll()[randomN])
+router.get("/:id", (req, res) => {
+    let id = req.params.id
+    let resultado = productos.filter(el => el.id == id);
+    let respuesta = (resultado.lenght > 0) ? resultado[0] : null
+
+    res.json(respuesta)
 })
 
+router.put("/:id", (req, res) => {
+    let id = req.params.id;
+    let body = req.body;
+    let resultado = productos.find(el => el.id == id);
+    let index = productos.indexOf(resultado);
+
+    productos.splice(index, 1, {...body, id: parseInt(id)})
+
+    res.json(`Se ha actualizado el id ${index + 1}: ${body}`)
+})
+
+router.delete("/:id", (req, res) => {
+    let id = req.params.id;
+    let resultado = productos.find(el => el.id == id);
+    let index = productos.indexOf(resultado);
+    productos.splice(index, 1)
+    res.json("Se ha eliminado el producto: " + id)
+})
+
+app.use('/api/productos', router)
 const server = app.listen(8080, () => {
-    console.warn("Servidor escuchando en el puerto 8080")
+    console.log('Servidor escuchando en el 8080')
 })
