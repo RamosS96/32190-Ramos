@@ -1,0 +1,15 @@
+html
+    head
+        title="Formulario productos"
+    body 
+        h2="Ingreso de productos"
+        form(action="/api/productos", method="post")
+            ul
+                li="Titulo: "
+                    input(type="text", name="title")
+                li="Precio: "
+                    input(type="text", name="price")
+                li="Img: "
+                    input(type="text", name="thumbnail")
+                button="Enviar"
+                a(href="/api/productos", target="_blank")='Ver productos'     

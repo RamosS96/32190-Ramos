@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('../partials/header.ejs'); %>
+    </header>
+    <main>
+        <h1>Carga de productos</h1>
+        <!DOCTYPE html>
+        <html lang="es">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Ingreso de productos</title>
+        </head>
+
+        <body>
+
+            <h2>Ingrese Producto</h2>
+            <form action="/api/productos" method="POST">
+                <ul>
+                    <label class="form-label">Título: </label><input class="form-control" type="text" name="title">
+                    <label class="form-label">Precio: </label><input class="form-control" type="text" name="price">
+                    <label class="form-label">Img: </label><input class="form-control" type="text" name="thumbnail">
+                    <button class="btn btn-success">Enviar</button>
+                    <a class="card-link" href="/api/productos/">Ver productos</a>
+                </ul>
+            </form>
+
+        </body>
+
+        </html>
+    </main>
+    <footer>
+        <%- include('../partials/footer.ejs'); %>
+    </footer>
+</body>
+
+</html>

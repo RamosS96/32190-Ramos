@@ -6,22 +6,33 @@ const { Router } = express
 const app = express()
 const router = Router()
 
+app.set('views', './views');
+app.set('view engine', 'ejs');
+app.get('/', (req, res) => {
+    res.render('./pages/home.ejs')
+});
+app.get('/api', (req, res) => {
+    res.render('./pages/cargaproductos.ejs')
+    
+})
 
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use('/api', express.static('public'))
+// app.use('/', express.static('public'))
 const productos = [];
 
 router.get('/', (req,res) => {
-    res.json(productos)
+    let items = productos
+    res.render('./pages/listadoproductos.ejs', {item: items})
 })
 
 router.post('/', (req, res) => {
     const nuevoproducto =  {...req.body, id: productos.length + 1}
 
     productos.push(nuevoproducto)
-    res.json("Se agregó el item bajo el id: " + nuevoproducto.id)
+    let items = productos
+    res.render('./pages/listadoproductos.ejs', {item: items})
 })
 
 router.get("/:id", (req, res) => {
