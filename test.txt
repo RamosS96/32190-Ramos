@@ -1,1 +1,1 @@
-[{"titulo":"Mesa","precio":5000,"id":1},{"titulo":"Mesa","precio":6000,"id":2},{"titulo":"Silla","precio":6000,"id":2},{"titulo":"Mesada","precio":6000,"id":2},{"titulo":"Ventana","precio":6000,"id":2},{"titulo":"Cuaderno","precio":6000,"id":2},{"titulo":"Vaso","precio":6000,"id":2}]
+[]

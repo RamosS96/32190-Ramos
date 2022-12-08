@@ -26,8 +26,10 @@
             <form action="/api/productos" method="POST">
                 <ul>
                     <label class="form-label">Título: </label><input class="form-control" type="text" name="title">
-                    <label class="form-label">Precio: </label><input class="form-control" type="text" name="price">
+                    <label class="form-label">Precio: </label><input class="form-control" type="number" name="price">
                     <label class="form-label">Img: </label><input class="form-control" type="text" name="thumbnail">
+                    <label class="form-label">Stock: </label><input class="form-control" type="number" name="stock">
+                    <label class="form-label">Codigo: </label><input class="form-control" type="text" name="code">
                     <button class="btn btn-success">Enviar</button>
                     <a class="card-link" href="/api/productos/">Ver productos</a>
                 </ul>

@@ -15,11 +15,15 @@
                     <th scope="col">Titulo</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Link Imagen</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Alta</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
                     <% item.forEach(i => { %>
-                        <tr><th scope="row"> - </th><td><%= i.title %></td><td><%= i.price %></td><td><%= i.thumbnail %></td></tr>
+                        <tr><th scope="row"> <%= i.id %> </th><td><%= i.title %></td><td><%= i.price %></td><td><%= i.thumbnail %></td><td><%= i.stock %></td><td><%= i.code %></td><td><%= i.alta %></td></tr>
                      <% }); %> 
 
                     
